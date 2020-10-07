@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Ticket;
 use Illuminate\Http\Request;
+use App\Http\Resources\TicketResource;
+use Symfony\Component\HttpFoundation\Response;
 
 class TicketController extends Controller
 {
@@ -14,7 +16,7 @@ class TicketController extends Controller
      */
     public function index()
     {
-        //
+        return TicketResource::collection(Ticket::latest()->get());
     }
 
     /**
@@ -35,7 +37,8 @@ class TicketController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $ticket = Ticket::create($request->all());
+        return response(new TicketResource($ticket), Response::HTTP_CREATED);
     }
 
     /**
@@ -46,7 +49,7 @@ class TicketController extends Controller
      */
     public function show(Ticket $ticket)
     {
-        //
+        return new TicketResource($ticket);
     }
 
     /**
@@ -69,7 +72,8 @@ class TicketController extends Controller
      */
     public function update(Request $request, Ticket $ticket)
     {
-        //
+        $ticket->update($request->all());
+        return response('updated', Response::HTTP_CREATED);
     }
 
     /**
@@ -80,6 +84,7 @@ class TicketController extends Controller
      */
     public function destroy(Ticket $ticket)
     {
-        //
+        $ticket->delete();
+        return response('Deleted', Response::HTTP_OK);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Transaction;
 use Illuminate\Http\Request;
+use App\Http\Resources\TransactionResource;
 
 class TransactionController extends Controller
 {
@@ -14,7 +15,7 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        //
+        return TransactionResource::collection(Transaction::where('ticket_id', 12)->get());
     }
 
     /**
